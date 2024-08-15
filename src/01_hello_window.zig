@@ -1,3 +1,5 @@
+// https://learnopengl.com/Getting-started/Hello-Window
+
 const std = @import("std");
 const c = @import("c.zig");
 
@@ -24,7 +26,7 @@ pub fn main() !void {
     };
     c.glfwMakeContextCurrent(window);
 
-    //_ = c.glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    _ = c.glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     while (c.glfwWindowShouldClose(window) == c.GL_FALSE) {
         processInput(window);
