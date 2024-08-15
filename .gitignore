@@ -1,5 +1,5 @@
 .zig-cache/
 zig-out/
 .DS_Store
-*.wasm
-*.wasm.o
+
+translated_c.zig
