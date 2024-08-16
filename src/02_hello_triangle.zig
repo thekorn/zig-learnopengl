@@ -25,10 +25,16 @@ pub fn main() !void {
     const width = 800;
     const height = 600;
 
-    const vertices = [9]f32{
-        -0.5, -0.5, 0.0,
-        0.5,  -0.5, 0.0,
-        0.0,  0.5,  0.0,
+    const vertices = [12]f32{
+        0.5, 0.5, 0.0, // top right
+        0.5, -0.5, 0.0, // bottom right
+        -0.5, -0.5, 0.0, // bottom left
+        -0.5, 0.5, 0.0, // top left
+    };
+
+    const indices = [6]u32{ // note that we start from 0!
+        0, 1, 3, // first triangle
+        1, 2, 3, // second triangle
     };
 
     if (c.glfwInit() == c.GL_FALSE) {
@@ -108,6 +114,13 @@ pub fn main() !void {
     c.glVertexAttribPointer(0, 3, c.GL_FLOAT, c.GL_FALSE, 3 * @sizeOf(f32), null);
     c.glEnableVertexAttribArray(0);
 
+    var ebo: u32 = undefined;
+    c.glGenBuffers(1, &ebo);
+    c.glBindBuffer(c.GL_ELEMENT_ARRAY_BUFFER, ebo);
+    c.glBufferData(c.GL_ELEMENT_ARRAY_BUFFER, @intCast(indices.len * @sizeOf(u32)), &indices, c.GL_STATIC_DRAW);
+
+    //c.glPolygonMode(c.GL_FRONT_AND_BACK, c.GL_LINE);
+
     while (c.glfwWindowShouldClose(window) == c.GL_FALSE) {
         processInput(window);
         c.glClearColor(0.2, 0.3, 0.3, 1.0);
@@ -115,7 +128,8 @@ pub fn main() !void {
 
         c.glUseProgram(shaderProgram);
         c.glBindVertexArray(vao);
-        c.glDrawArrays(c.GL_TRIANGLES, 0, 3);
+        c.glDrawElements(c.GL_TRIANGLES, 6, c.GL_UNSIGNED_INT, null);
+        c.glBindVertexArray(0);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
