@@ -50,7 +50,10 @@ const SubCommand = struct {
 };
 
 pub fn build(b: *std.Build) void {
-    const commands = [_]SubCommand{.{ .name = "hello_window", .src = b.path("src/01_hello_window.zig"), .description = "Hello GLFW Window" }};
+    const commands = [_]SubCommand{
+        .{ .name = "hello_window", .src = b.path("src/01_hello_window.zig"), .description = "Hello GLFW Window" },
+        .{ .name = "hello_triangle", .src = b.path("src/02_hello_triangle.zig"), .description = "Hello Triangle" },
+    };
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer std.debug.assert(gpa.deinit() == .ok);
 
