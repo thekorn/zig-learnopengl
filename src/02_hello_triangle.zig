@@ -12,12 +12,21 @@ const vertexShaderSource: [:0]const u8 =
     \\}
 ;
 
-const fragmentShaderSource: [:0]const u8 =
+const orangeFragmentShaderSource: [:0]const u8 =
     \\#version 330 core
     \\out vec4 FragColor;
     \\void main()
     \\{
     \\   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    \\}
+;
+
+const yellowFragmentShaderSource: [:0]const u8 =
+    \\#version 330 core
+    \\out vec4 FragColor;
+    \\void main()
+    \\{
+    \\   FragColor = vec4(1.0f, 1.0f, 0.2f, 1.0f);
     \\}
 ;
 
@@ -91,42 +100,74 @@ pub fn main() !void {
         return error.FailedToCompileShader;
     }
 
-    const fragmentShader = c.glCreateShader(c.GL_FRAGMENT_SHADER);
-    const fragmentSrcPtr: ?[*]const u8 = fragmentShaderSource.ptr;
-    c.glShaderSource(fragmentShader, 1, &fragmentSrcPtr, null);
-    c.glCompileShader(fragmentShader);
+    // orange shader aand program
+    const orangeFragmentShader = c.glCreateShader(c.GL_FRAGMENT_SHADER);
+    const orangeFragmentSrcPtr: ?[*]const u8 = orangeFragmentShaderSource.ptr;
+    c.glShaderSource(orangeFragmentShader, 1, &orangeFragmentSrcPtr, null);
+    c.glCompileShader(orangeFragmentShader);
 
-    c.glGetShaderiv(fragmentShader, c.GL_COMPILE_STATUS, &success);
+    c.glGetShaderiv(orangeFragmentShader, c.GL_COMPILE_STATUS, &success);
     if (success == c.GL_FALSE) {
         var infoLog: [512]u8 = undefined;
-        c.glGetShaderInfoLog(fragmentShader, 512, null, &infoLog);
+        c.glGetShaderInfoLog(orangeFragmentShader, 512, null, &infoLog);
         std.debug.print("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{s}\n", .{infoLog});
         return error.FailedToCompileShader;
     }
 
-    const shaderProgram = c.glCreateProgram();
-    c.glAttachShader(shaderProgram, vertexShader);
-    c.glAttachShader(shaderProgram, fragmentShader);
-    c.glLinkProgram(shaderProgram);
+    const orangeShaderProgram = c.glCreateProgram();
+    c.glAttachShader(orangeShaderProgram, vertexShader);
+    c.glAttachShader(orangeShaderProgram, orangeFragmentShader);
+    c.glLinkProgram(orangeShaderProgram);
 
-    c.glGetProgramiv(shaderProgram, c.GL_LINK_STATUS, &success);
+    c.glGetProgramiv(orangeShaderProgram, c.GL_LINK_STATUS, &success);
     if (success == c.GL_FALSE) {
         var infoLog: [512]u8 = undefined;
-        c.glGetProgramInfoLog(shaderProgram, 512, null, &infoLog);
+        c.glGetProgramInfoLog(orangeShaderProgram, 512, null, &infoLog);
         std.debug.print("ERROR::SHADER::PROGRAM::LINKING_FAILED\n{s}\n", .{infoLog});
         return error.FailedToLinkShaderProgram;
     }
+
+    // yellow shader aand program
+    const yellowFragmentShader = c.glCreateShader(c.GL_FRAGMENT_SHADER);
+    const yellowFragmentSrcPtr: ?[*]const u8 = yellowFragmentShaderSource.ptr;
+    c.glShaderSource(yellowFragmentShader, 1, &yellowFragmentSrcPtr, null);
+    c.glCompileShader(yellowFragmentShader);
+
+    c.glGetShaderiv(yellowFragmentShader, c.GL_COMPILE_STATUS, &success);
+    if (success == c.GL_FALSE) {
+        var infoLog: [512]u8 = undefined;
+        c.glGetShaderInfoLog(yellowFragmentShader, 512, null, &infoLog);
+        std.debug.print("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{s}\n", .{infoLog});
+        return error.FailedToCompileShader;
+    }
+
+    const yellowShaderProgram = c.glCreateProgram();
+    c.glAttachShader(yellowShaderProgram, vertexShader);
+    c.glAttachShader(yellowShaderProgram, yellowFragmentShader);
+    c.glLinkProgram(yellowShaderProgram);
+
+    c.glGetProgramiv(yellowShaderProgram, c.GL_LINK_STATUS, &success);
+    if (success == c.GL_FALSE) {
+        var infoLog: [512]u8 = undefined;
+        c.glGetProgramInfoLog(yellowShaderProgram, 512, null, &infoLog);
+        std.debug.print("ERROR::SHADER::PROGRAM::LINKING_FAILED\n{s}\n", .{infoLog});
+        return error.FailedToLinkShaderProgram;
+    }
+
     c.glDeleteShader(vertexShader);
-    c.glDeleteShader(fragmentShader);
+    c.glDeleteShader(orangeFragmentShader);
+    c.glDeleteShader(yellowFragmentShader);
 
     while (c.glfwWindowShouldClose(window) == c.GL_FALSE) {
         processInput(window);
         c.glClearColor(0.2, 0.3, 0.3, 1.0);
         c.glClear(c.GL_COLOR_BUFFER_BIT);
 
-        c.glUseProgram(shaderProgram);
+        c.glUseProgram(orangeShaderProgram);
         c.glBindVertexArray(vaos[0]);
         c.glDrawArrays(c.GL_TRIANGLES, 0, 6);
+
+        c.glUseProgram(yellowShaderProgram);
         c.glBindVertexArray(vaos[1]);
         c.glDrawArrays(c.GL_TRIANGLES, 0, 6);
 
