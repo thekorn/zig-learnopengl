@@ -25,15 +25,17 @@ pub fn main() !void {
     const width = 800;
     const height = 600;
 
-    const vertices = [18]f32{
-        // first
+    const first_vertices = [9]f32{
         -1.0, -0.5, 0.0,
         -0.0, -0.5, 0.0,
         -0.5, 0.5,  0.0,
+    };
+
+    const second_vertices = [9]f32{
         // second
-        0.0,  -0.5, 0.0,
-        1.0,  -0.5, 0.0,
-        0.5,  0.5,  0.0,
+        0.0, -0.5, 0.0,
+        1.0, -0.5, 0.0,
+        0.5, 0.5,  0.0,
     };
 
     if (c.glfwInit() == c.GL_FALSE) {
@@ -57,10 +59,23 @@ pub fn main() !void {
 
     _ = c.glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    var vbo: u32 = undefined;
-    c.glGenBuffers(1, &vbo);
-    c.glBindBuffer(c.GL_ARRAY_BUFFER, vbo);
-    c.glBufferData(c.GL_ARRAY_BUFFER, @intCast(vertices.len * @sizeOf(f32)), &vertices, c.GL_STATIC_DRAW);
+    var vbos: [2]u32 = undefined;
+    c.glGenBuffers(2, &vbos);
+
+    var vaos: [2]u32 = undefined;
+    c.glGenVertexArrays(2, &vaos);
+
+    c.glBindVertexArray(vaos[0]);
+    c.glBindBuffer(c.GL_ARRAY_BUFFER, vbos[0]);
+    c.glBufferData(c.GL_ARRAY_BUFFER, @intCast(first_vertices.len * @sizeOf(f32)), &first_vertices, c.GL_STATIC_DRAW);
+    c.glVertexAttribPointer(0, 3, c.GL_FLOAT, c.GL_FALSE, 3 * @sizeOf(f32), null);
+    c.glEnableVertexAttribArray(0);
+
+    c.glBindVertexArray(vaos[1]);
+    c.glBindBuffer(c.GL_ARRAY_BUFFER, vbos[1]);
+    c.glBufferData(c.GL_ARRAY_BUFFER, @intCast(second_vertices.len * @sizeOf(f32)), &second_vertices, c.GL_STATIC_DRAW);
+    c.glVertexAttribPointer(0, 3, c.GL_FLOAT, c.GL_FALSE, 3 * @sizeOf(f32), null);
+    c.glEnableVertexAttribArray(0);
 
     const vertexShader = c.glCreateShader(c.GL_VERTEX_SHADER);
     const vertexSrcPtr: ?[*]const u8 = vertexShaderSource.ptr;
@@ -104,22 +119,15 @@ pub fn main() !void {
     c.glDeleteShader(vertexShader);
     c.glDeleteShader(fragmentShader);
 
-    var vao: u32 = undefined;
-    c.glGenVertexArrays(1, &vao);
-    c.glBindVertexArray(vao);
-
-    c.glBindBuffer(c.GL_ARRAY_BUFFER, vbo);
-    c.glBufferData(c.GL_ARRAY_BUFFER, @intCast(vertices.len * @sizeOf(f32)), &vertices, c.GL_STATIC_DRAW);
-    c.glVertexAttribPointer(0, 3, c.GL_FLOAT, c.GL_FALSE, 3 * @sizeOf(f32), null);
-    c.glEnableVertexAttribArray(0);
-
     while (c.glfwWindowShouldClose(window) == c.GL_FALSE) {
         processInput(window);
         c.glClearColor(0.2, 0.3, 0.3, 1.0);
         c.glClear(c.GL_COLOR_BUFFER_BIT);
 
         c.glUseProgram(shaderProgram);
-        c.glBindVertexArray(vao);
+        c.glBindVertexArray(vaos[0]);
+        c.glDrawArrays(c.GL_TRIANGLES, 0, 6);
+        c.glBindVertexArray(vaos[1]);
         c.glDrawArrays(c.GL_TRIANGLES, 0, 6);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
