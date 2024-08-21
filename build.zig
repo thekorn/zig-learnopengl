@@ -51,8 +51,12 @@ const SubCommand = struct {
 
 pub fn build(b: *std.Build) void {
     const commands = [_]SubCommand{
-        .{ .name = "hello_window", .src = b.path("src/01_hello_window.zig"), .description = "Hello GLFW Window" },
-        .{ .name = "hello_triangle", .src = b.path("src/02_hello_triangle.zig"), .description = "Hello Triangle" },
+        .{ .name = "hello_window", .src = b.path("src/ch4_hello_window.zig"), .description = "Hello GLFW Window" },
+        .{ .name = "hello_triangle_5.5.2", .src = b.path("src/ch5_hello_triangle_5.5.2.zig"), .description = "Hello Triangle 5.5.2" },
+        .{ .name = "hello_triangle_5.6", .src = b.path("src/ch5_hello_triangle_5.6.zig"), .description = "Hello Triangle 5.6" },
+        .{ .name = "hello_triangle_ex1", .src = b.path("src/ch5_hello_triangle_exercise1.zig"), .description = "Hello Triangle Excercise 1" },
+        .{ .name = "hello_triangle_ex2", .src = b.path("src/ch5_hello_triangle_exercise2.zig"), .description = "Hello Triangle Excercise 2" },
+        .{ .name = "hello_triangle_ex3", .src = b.path("src/ch5_hello_triangle_exercise3.zig"), .description = "Hello Triangle Excercise 3" },
     };
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer std.debug.assert(gpa.deinit() == .ok);

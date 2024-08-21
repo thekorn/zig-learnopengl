@@ -1,7 +1,7 @@
 // https://learnopengl.com/Getting-started/Hello-Window
 
 const std = @import("std");
-const c = @import("c.zig");
+const c = @import("lib/c.zig");
 
 const vertexShaderSource: [:0]const u8 =
     \\#version 330 core
