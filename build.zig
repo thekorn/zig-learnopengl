@@ -30,7 +30,7 @@ const SubCommand = struct {
             run_cmd.addArgs(args);
         }
 
-        const alloc_buf = try std.fmt.allocPrint(alloc, "Run {s}", .{self.name});
+        const alloc_buf = try std.fmt.allocPrint(alloc, "Run {s} - {s}", .{ self.name, self.description });
 
         defer alloc.free(alloc_buf);
 
