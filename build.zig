@@ -58,6 +58,7 @@ pub fn build(b: *std.Build) void {
         .{ .name = "hello_triangle_ex2", .src = b.path("src/ch5_hello_triangle_exercise2.zig"), .description = "Hello Triangle Excercise 2" },
         .{ .name = "hello_triangle_ex3", .src = b.path("src/ch5_hello_triangle_exercise3.zig"), .description = "Hello Triangle Excercise 3" },
         .{ .name = "shaders_6.3", .src = b.path("src/ch6_shaders_6.3.zig"), .description = "Shaders 6.3" },
+        .{ .name = "shaders_6.4", .src = b.path("src/ch6_shaders_6.4.zig"), .description = "Shaders 6.4" },
     };
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer std.debug.assert(gpa.deinit() == .ok);
