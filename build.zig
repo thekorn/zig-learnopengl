@@ -60,6 +60,7 @@ pub fn build(b: *std.Build) void {
         .{ .name = "shaders_6.3", .src = b.path("src/ch6_shaders_6.3.zig"), .description = "Shaders 6.3" },
         .{ .name = "shaders_6.4", .src = b.path("src/ch6_shaders_6.4.zig"), .description = "Shaders 6.4" },
         .{ .name = "shaders_6.5", .src = b.path("src/ch6_shaders_6.5.zig"), .description = "Shaders 6.5" },
+        .{ .name = "shaders_6.7", .src = b.path("src/ch6_shaders_6.7.zig"), .description = "Shaders 6.7" },
     };
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer std.debug.assert(gpa.deinit() == .ok);
