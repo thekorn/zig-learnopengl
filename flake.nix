@@ -1,5 +1,5 @@
 {
-  description = "libxev is a high performance, cross-platform event loop.";
+  description = "dev shell for zig-learnopengl";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
