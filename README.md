@@ -16,6 +16,12 @@ In order to make  implementation easier, translate the c code to zig:
 $ zig translate-c $(pkg-config --cflags glfw3) src/cImports.h  > translated_c.zig
 ```
 
+In order to create a local env, with proper versions of zig, zls and glfw you can use nix to create a dev shell
+
+```bash
+$ nix develop -c zsh
+```
+
 ## debugging using lldb
 
 run bin using lldb
