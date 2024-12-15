@@ -4,7 +4,7 @@ fn linkLibs(exe: *std.Build.Step.Compile) void {
     const framework_path: std.Build.LazyPath = .{ .cwd_relative = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks" };
 
     exe.linkLibC();
-    exe.linkSystemLibrary("glfw");
+    exe.linkSystemLibrary("glfw3");
     exe.linkFramework("OpenGL");
     exe.addSystemFrameworkPath(framework_path);
 }
